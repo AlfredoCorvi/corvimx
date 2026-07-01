@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Recuperar contraseña — SitioWeb MX{% endblock %}
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="form-wrapper">
+          <h2><i class="bi bi-key me-2" style="color:var(--azul-claro);"></i>Recuperar contraseña</h2>
+          <p class="subtitulo">Ingresa tu correo y te enviaremos instrucciones para restablecer tu contraseña.</p>
+          <form method="post" id="formRecuperar" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Correo electrónico</label>
+              <input type="email" name="email" class="form-control" placeholder="tu@correo.com" required>
+            </div>
+            <button type="submit" class="btn-principal w-100">
+              <i class="bi bi-envelope me-2"></i>Enviar instrucciones
+            </button>
+          </form>
+          <p style="text-align:center; margin-top:20px; font-size:0.88rem; color:var(--texto-medio);">
+            <a href="{% url 'login' %}">← Volver al inicio de sesión</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('formRecuperar').addEventListener('submit', function(e) {
+  const email = document.querySelector('[name="email"]').value;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regex.test(email)) {
+    alert('Ingresa un correo electrónico válido.');
+    e.preventDefault();
+  }
+});
+</script>
+{% endblock %}

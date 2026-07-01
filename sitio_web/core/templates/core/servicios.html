@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Servicios — SitioWeb MX{% endblock %}
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="seccion-titulo"><i class="bi bi-grid me-2" style="color:var(--acento);"></i>Nuestros servicios</h1>
+    <div class="linea-acento"></div>
+    <p class="seccion-subtitulo">Soluciones completas para cada etapa de tu proyecto digital.</p>
+    <div class="row g-4">
+      {% for servicio in servicios_lista %}
+      <div class="col-md-6 col-lg-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">{{ servicio.icono }}</div>
+          <h3>{{ servicio.nombre }}</h3>
+          <p>{{ servicio.desc }}</p>
+          <span class="badge-estado badge-activo mt-2">Disponible</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

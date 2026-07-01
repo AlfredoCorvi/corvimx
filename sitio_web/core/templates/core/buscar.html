@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Búsqueda — SitioWeb MX{% endblock %}
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="seccion-titulo"><i class="bi bi-search me-2" style="color:var(--acento);"></i>Buscar en el sitio</h1>
+    <div class="linea-acento"></div>
+
+    <form method="get" class="d-flex gap-2 mb-4" style="max-width:560px;" id="formBusqueda" novalidate>
+      {{ form.q }}
+      <button type="submit" class="btn-principal" style="white-space:nowrap;">
+        <i class="bi bi-search me-1"></i>Buscar
+      </button>
+    </form>
+
+    {% if query %}
+      <p style="color:var(--texto-medio); font-size:0.9rem; margin-bottom:16px;">
+        {% if resultados %}
+          <strong>{{ resultados|length }}</strong> resultado(s) para "<strong>{{ query }}</strong>"
+        {% else %}
+          No se encontraron resultados para "<strong>{{ query }}</strong>".
+        {% endif %}
+      </p>
+
+      {% for r in resultados %}
+        <div class="resultado-item">
+          <h4><a href="{{ r.url }}">{{ r.titulo }}</a></h4>
+          <p>{{ r.desc }}</p>
+          <div class="url">{{ r.url }}</div>
+        </div>
+      {% empty %}
+        <div class="tarjeta text-center py-5">
+          <div style="font-size:2.5rem; margin-bottom:12px;">🔍</div>
+          <p style="color:var(--texto-medio);">Intenta con otras palabras clave o revisa el <a href="{% url 'mapa_sitio' %}">Mapa del sitio</a>.</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

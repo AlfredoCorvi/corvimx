@@ -1,0 +1,129 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Contáctanos — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-7">
+        <div class="form-wrapper">
+          <h2><i class="bi bi-envelope me-2" style="color:var(--azul-claro);"></i>Contáctanos</h2>
+          <p class="subtitulo">Responderemos tu mensaje en menos de 24 horas.</p>
+
+          <form method="post" id="formContacto" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">{{ form.nombre.label }}</label>
+                {{ form.nombre }}
+                {% if form.nombre.errors %}<div class="invalid-feedback d-block">{{ form.nombre.errors.0 }}</div>{% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}<div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>{% endif %}
+              </div>
+              <div class="col-12">
+                <label class="form-label">{{ form.asunto.label }}</label>
+                {{ form.asunto }}
+                {% if form.asunto.errors %}<div class="invalid-feedback d-block">{{ form.asunto.errors.0 }}</div>{% endif %}
+              </div>
+              <div class="col-12">
+                <label class="form-label">{{ form.mensaje.label }}</label>
+                {{ form.mensaje }}
+                <div style="font-size:0.8rem; color:var(--texto-medio); margin-top:4px;">
+                  Mínimo 20 caracteres. <span id="charCount">0</span>/500
+                </div>
+                {% if form.mensaje.errors %}<div class="invalid-feedback d-block">{{ form.mensaje.errors.0 }}</div>{% endif %}
+              </div>
+
+              <!-- Verificación humana -->
+              <div class="col-12">
+                <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
+                  <div class="captcha-check" id="captchaCheck"></div>
+                  <span class="captcha-texto">No soy un robot</span>
+                  <span style="margin-left:auto;">🛡️</span>
+                </div>
+                <input type="hidden" name="captcha_ok" id="captchaInput" value="">
+                <div id="captchaError" class="invalid-feedback" style="display:none;">Confirma que no eres un robot.</div>
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn-principal w-100">
+                  <i class="bi bi-send me-2"></i>Enviar mensaje
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <h3 class="seccion-titulo" style="font-size:1.4rem;">Otras formas de contacto</h3>
+        <div class="linea-acento"></div>
+        <div class="d-flex flex-column gap-3">
+          <div class="tarjeta" style="padding:20px;">
+            <div class="d-flex align-items-center gap-14">
+              <div class="tarjeta-icono" style="margin:0 16px 0 0; flex-shrink:0;">📧</div>
+              <div>
+                <strong>Correo electrónico</strong>
+                <p style="margin:0; font-size:0.88rem;">soporte@sitioweb.mx</p>
+              </div>
+            </div>
+          </div>
+          <div class="tarjeta" style="padding:20px;">
+            <div class="d-flex align-items-center">
+              <div class="tarjeta-icono" style="margin:0 16px 0 0; flex-shrink:0;">💬</div>
+              <div>
+                <strong>Chat en vivo</strong>
+                <p style="margin:0; font-size:0.88rem;"><a href="{% url 'chat' %}">Ir al chat de soporte →</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="tarjeta" style="padding:20px;">
+            <div class="d-flex align-items-center">
+              <div class="tarjeta-icono" style="margin:0 16px 0 0; flex-shrink:0;">📬</div>
+              <div>
+                <strong>Buzón interno</strong>
+                <p style="margin:0; font-size:0.88rem;"><a href="{% url 'buzon' %}">Enviar mensaje al buzón →</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let captchaOk = false;
+function toggleCaptcha() {
+  captchaOk = !captchaOk;
+  const check = document.getElementById('captchaCheck');
+  check.innerHTML = captchaOk ? '✓' : '';
+  check.classList.toggle('marcado', captchaOk);
+  document.getElementById('captchaInput').value = captchaOk ? '1' : '';
+}
+
+const textarea = document.querySelector('[name="mensaje"]');
+const counter = document.getElementById('charCount');
+textarea.addEventListener('input', () => {
+  counter.textContent = textarea.value.length;
+  if (textarea.value.length < 20) counter.style.color = '#ef4444';
+  else counter.style.color = '#22c55e';
+});
+
+document.getElementById('formContacto').addEventListener('submit', function(e) {
+  if (!captchaOk) {
+    document.getElementById('captchaError').style.display = 'block';
+    e.preventDefault();
+  }
+  if (textarea.value.length < 20) {
+    alert('El mensaje debe tener al menos 20 caracteres.');
+    e.preventDefault();
+  }
+});
+</script>
+{% endblock %}

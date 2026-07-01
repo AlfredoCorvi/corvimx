@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Página no encontrada — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<div class="pagina-error">
+  <div class="error-codigo">4<span>0</span>4</div>
+  <h1 class="error-titulo">Página no encontrada</h1>
+  <p class="error-desc">
+    La página que buscas no existe o fue movida a otra dirección.
+    Verifica la URL o regresa al inicio.
+  </p>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <a href="{% url 'inicio' %}" class="btn-principal" style="text-decoration:none;">
+      <i class="bi bi-house me-2"></i>Ir al inicio
+    </a>
+    <a href="{% url 'mapa_sitio' %}" class="btn-acento" style="text-decoration:none;">
+      <i class="bi bi-map me-2"></i>Ver mapa del sitio
+    </a>
+  </div>
+
+  <div style="margin-top:48px; padding:28px; background:#f8fafc; border-radius:10px; max-width:500px;">
+    <p style="font-size:0.9rem; color:var(--texto-medio); margin-bottom:12px;"><strong>¿Buscabas algo específico?</strong></p>
+    <form action="{% url 'buscar' %}" method="get" class="d-flex gap-2">
+      <input class="form-control" type="text" name="q" placeholder="Buscar en el sitio..." required>
+      <button type="submit" class="btn-principal" style="white-space:nowrap;">
+        <i class="bi bi-search"></i>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

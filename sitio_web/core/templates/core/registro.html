@@ -1,0 +1,154 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Registrarse — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-6">
+        <div class="form-wrapper">
+          <h2><i class="bi bi-person-plus me-2" style="color:var(--azul-claro);"></i>Crear cuenta</h2>
+          <p class="subtitulo">Completa el formulario para registrarte. Es rápido y gratuito.</p>
+
+          <form method="post" novalidate id="formRegistro">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                  <div class="invalid-feedback d-block">{{ form.first_name.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-6">
+                <label class="form-label">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                  <div class="invalid-feedback d-block">{{ form.last_name.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-12">
+                <label class="form-label">{{ form.username.label }}</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                  <div class="invalid-feedback d-block">{{ form.username.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-12">
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-6">
+                <label class="form-label">{{ form.password1.label }}</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                  <div class="invalid-feedback d-block">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-6">
+                <label class="form-label">{{ form.password2.label }}</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                  <div class="invalid-feedback d-block">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Verificación humana (captcha simulado) -->
+              <div class="col-12">
+                <label class="form-label">Verificación humana</label>
+                <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
+                  <div class="captcha-check" id="captchaCheck"></div>
+                  <span class="captcha-texto">No soy un robot</span>
+                  <span style="margin-left:auto; font-size:1.4rem;">🛡️</span>
+                </div>
+                <input type="hidden" name="captcha_ok" id="captchaInput" value="">
+                <div id="captchaError" class="invalid-feedback" style="display:none;">Debes confirmar que no eres un robot.</div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <button type="submit" class="btn-principal w-100" id="btnRegistro">
+                  <i class="bi bi-person-check me-2"></i>Crear mi cuenta
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <p style="text-align:center; margin-top:20px; font-size:0.9rem; color:var(--texto-medio);">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let captchaOk = false;
+
+function toggleCaptcha() {
+  captchaOk = !captchaOk;
+  const check = document.getElementById('captchaCheck');
+  const input = document.getElementById('captchaInput');
+  if (captchaOk) {
+    check.innerHTML = '✓';
+    check.classList.add('marcado');
+    input.value = '1';
+  } else {
+    check.innerHTML = '';
+    check.classList.remove('marcado');
+    input.value = '';
+  }
+}
+
+// Validación frontend
+document.getElementById('formRegistro').addEventListener('submit', function(e) {
+  let ok = true;
+
+  // Captcha
+  if (!captchaOk) {
+    document.getElementById('captchaError').style.display = 'block';
+    ok = false;
+  } else {
+    document.getElementById('captchaError').style.display = 'none';
+  }
+
+  // Contraseñas coinciden
+  const p1 = document.querySelector('[name="password1"]').value;
+  const p2 = document.querySelector('[name="password2"]').value;
+  if (p1 && p2 && p1 !== p2) {
+    alert('Las contraseñas no coinciden.');
+    ok = false;
+  }
+
+  if (!ok) e.preventDefault();
+});
+
+// Validación en tiempo real
+document.querySelector('[name="username"]').addEventListener('input', function() {
+  const val = this.value;
+  const regex = /^[a-zA-Z0-9_]+$/;
+  if (val && !regex.test(val)) {
+    this.classList.add('is-invalid');
+  } else {
+    this.classList.remove('is-invalid');
+    if (val.length >= 3) this.classList.add('is-valid');
+  }
+});
+
+document.querySelector('[name="email"]').addEventListener('blur', function() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (this.value && emailRegex.test(this.value)) {
+    this.classList.add('is-valid');
+    this.classList.remove('is-invalid');
+  } else if (this.value) {
+    this.classList.add('is-invalid');
+    this.classList.remove('is-valid');
+  }
+});
+</script>
+{% endblock %}

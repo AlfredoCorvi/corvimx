@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Error del servidor — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<div class="pagina-error">
+  <div class="error-codigo">5<span>0</span>0</div>
+  <h1 class="error-titulo">Error interno del servidor</h1>
+  <p class="error-desc">
+    Algo salió mal de nuestro lado. Nuestro equipo ya fue notificado
+    y estamos trabajando para resolverlo. Intenta de nuevo en unos momentos.
+  </p>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <a href="{% url 'inicio' %}" class="btn-principal" style="text-decoration:none;">
+      <i class="bi bi-house me-2"></i>Volver al inicio
+    </a>
+    <a href="{% url 'contacto' %}" class="btn-acento" style="text-decoration:none;">
+      <i class="bi bi-envelope me-2"></i>Reportar el problema
+    </a>
+  </div>
+</div>
+{% endblock %}

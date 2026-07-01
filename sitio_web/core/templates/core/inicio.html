@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Inicio — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h1>Soluciones digitales para <span>tu negocio</span></h1>
+    <p>Plataforma segura, confiable y fácil de usar. Todo lo que necesitas en un solo lugar.</p>
+    <a href="{% url 'registro' %}" class="btn-acento me-3" style="border-radius:8px; padding:12px 28px; font-weight:700; text-decoration:none;">
+      <i class="bi bi-rocket me-2"></i>Comenzar gratis
+    </a>
+    <a href="{% url 'servicios' %}" class="btn-principal" style="text-decoration:none;">
+      Ver servicios <i class="bi bi-arrow-right ms-1"></i>
+    </a>
+  </div>
+</section>
+
+<!-- Tarjetas de características -->
+<section class="seccion">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="seccion-titulo">¿Por qué elegirnos?</h2>
+      <div class="linea-acento mx-auto"></div>
+      <p class="seccion-subtitulo">Herramientas diseñadas para simplificar tu trabajo</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">🔐</div>
+          <h3>Seguridad robusta</h3>
+          <p>Validación de datos en frontend y backend, autenticación segura y protección CSRF en cada formulario.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">⚡</div>
+          <h3>Respuesta rápida</h3>
+          <p>Chat en tiempo real y buzón de mensajes para atender tus necesidades de forma inmediata.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">📱</div>
+          <h3>Diseño adaptable</h3>
+          <p>Experiencia optimizada en dispositivos móviles, tabletas y computadoras de escritorio.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">🗺️</div>
+          <h3>Navegación clara</h3>
+          <p>Mapa del sitio completo y menú intuitivo para encontrar todo lo que necesitas sin esfuerzo.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">🔍</div>
+          <h3>Búsqueda integrada</h3>
+          <p>Motor de búsqueda interno que te ayuda a encontrar páginas y contenidos al instante.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tarjeta">
+          <div class="tarjeta-icono">🤝</div>
+          <h3>Soporte humano</h3>
+          <p>Equipo disponible vía chat, buzón y formulario de contacto para resolver cualquier duda.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background: linear-gradient(135deg, #1a4a8a, #0f2644); padding: 60px 0; text-align:center; color:white;">
+  <div class="container">
+    <h2 style="font-size:2rem; font-weight:800; margin-bottom:12px;">¿Listo para empezar?</h2>
+    <p style="opacity:.85; margin-bottom:28px;">Crea tu cuenta gratis en menos de dos minutos.</p>
+    <a href="{% url 'registro' %}" class="btn-acento" style="text-decoration:none; padding:13px 32px; font-size:1rem;">
+      <i class="bi bi-person-plus me-2"></i>Crear cuenta
+    </a>
+  </div>
+</section>
+{% endblock %}

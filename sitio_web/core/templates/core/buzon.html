@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Buzón — SitioWeb MX{% endblock %}
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <div class="form-wrapper">
+          <h2><i class="bi bi-mailbox me-2" style="color:var(--azul-claro);"></i>Buzón de mensajes</h2>
+          <p class="subtitulo">
+            {% if user.is_authenticated %}
+              Hola, <strong>{{ user.first_name|default:user.username }}</strong>. Envía un mensaje al equipo de soporte.
+            {% else %}
+              <a href="{% url 'login' %}">Inicia sesión</a> para acceder al buzón.
+            {% endif %}
+          </p>
+          <form method="post" id="formBuzon" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">{{ form.asunto.label }}</label>
+              {{ form.asunto }}
+              {% if form.asunto.errors %}<div class="invalid-feedback d-block">{{ form.asunto.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ form.mensaje.label }}</label>
+              {{ form.mensaje }}
+              {% if form.mensaje.errors %}<div class="invalid-feedback d-block">{{ form.mensaje.errors.0 }}</div>{% endif %}
+            </div>
+            <button type="submit" class="btn-principal w-100">
+              <i class="bi bi-send me-2"></i>Enviar al buzón
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('formBuzon').addEventListener('submit', function(e) {
+  const asunto = document.querySelector('[name="asunto"]').value.trim();
+  const msg = document.querySelector('[name="mensaje"]').value.trim();
+  if (!asunto || msg.length < 10) {
+    alert('Asunto requerido y mensaje mínimo de 10 caracteres.');
+    e.preventDefault();
+  }
+});
+</script>
+{% endblock %}

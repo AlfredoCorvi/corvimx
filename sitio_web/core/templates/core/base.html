@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}SitioWeb MX{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{% static 'css/estilos.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar-principal">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 py-1">
+
+      <!-- ID del Sitio -->
+      <a href="{% url 'inicio' %}" class="navbar-brand-id">
+        <div class="logo-circulo">S</div>
+        <span>SitioWeb <span style="color:var(--acento);">MX</span></span>
+      </a>
+
+      <!-- Secciones principales (desktop) -->
+      <div class="d-none d-lg-flex align-items-center">
+        <a href="{% url 'inicio' %}" class="nav-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">
+          <i class="bi bi-house-door me-1"></i>Inicio
+        </a>
+        <a href="{% url 'nosotros' %}" class="nav-link {% if request.resolver_match.url_name == 'nosotros' %}active{% endif %}">
+          <i class="bi bi-people me-1"></i>Nosotros
+        </a>
+        <a href="{% url 'servicios' %}" class="nav-link {% if request.resolver_match.url_name == 'servicios' %}active{% endif %}">
+          <i class="bi bi-grid me-1"></i>Servicios
+        </a>
+        <a href="{% url 'contacto' %}" class="nav-link {% if request.resolver_match.url_name == 'contacto' %}active{% endif %}">
+          <i class="bi bi-envelope me-1"></i>Contáctanos
+        </a>
+        <a href="{% url 'ayuda' %}" class="nav-link {% if request.resolver_match.url_name == 'ayuda' %}active{% endif %}">
+          <i class="bi bi-question-circle me-1"></i>Ayuda
+        </a>
+        <a href="{% url 'mapa_sitio' %}" class="nav-link {% if request.resolver_match.url_name == 'mapa_sitio' %}active{% endif %}">
+          <i class="bi bi-map me-1"></i>Mapa
+        </a>
+        <a href="{% url 'chat' %}" class="nav-link {% if request.resolver_match.url_name == 'chat' %}active{% endif %}">
+          <i class="bi bi-chat-dots me-1"></i>Chat
+        </a>
+        <a href="{% url 'buzon' %}" class="nav-link {% if request.resolver_match.url_name == 'buzon' %}active{% endif %}">
+          <i class="bi bi-mailbox me-1"></i>Buzón
+        </a>
+      </div>
+
+      <!-- Buscador + elementos adicionales -->
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <form action="{% url 'buscar' %}" method="get" class="buscador-navbar d-none d-md-flex">
+          <input type="text" name="q" placeholder="Buscar..." value="{{ request.GET.q }}" maxlength="200" required>
+          <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+
+        {% if user.is_authenticated %}
+          <span style="color:rgba(255,255,255,0.7); font-size:0.85rem;">Hola, {{ user.first_name|default:user.username }}</span>
+          <a href="{% url 'logout' %}" class="nav-link btn-acento" style="padding:6px 14px!important;">
+            <i class="bi bi-box-arrow-right"></i> Salir
+          </a>
+        {% else %}
+          <a href="{% url 'registro' %}" class="nav-link" style="color:rgba(255,255,255,0.82)!important; font-size:0.88rem;">
+            <i class="bi bi-person-plus me-1"></i>Registrar
+          </a>
+          <a href="{% url 'login' %}" class="nav-link btn-acento">
+            <i class="bi bi-lock me-1"></i>Entrar
+          </a>
+        {% endif %}
+
+        <!-- Menú móvil -->
+        <button class="btn d-lg-none" style="color:white; border:1px solid rgba(255,255,255,0.3); padding:5px 10px;"
+          data-bs-toggle="collapse" data-bs-target="#menuMovil">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú colapsable móvil -->
+    <div class="collapse d-lg-none" id="menuMovil">
+      <div class="py-2 border-top" style="border-color:rgba(255,255,255,0.12)!important;">
+        <form action="{% url 'buscar' %}" method="get" class="d-flex gap-2 mb-2 px-1">
+          <input class="form-control form-control-sm" type="text" name="q" placeholder="Buscar en el sitio...">
+          <button class="btn btn-sm" style="background:var(--acento);"><i class="bi bi-search"></i></button>
+        </form>
+        <a href="{% url 'inicio' %}" class="nav-link d-block"><i class="bi bi-house-door me-2"></i>Inicio</a>
+        <a href="{% url 'nosotros' %}" class="nav-link d-block"><i class="bi bi-people me-2"></i>Nosotros</a>
+        <a href="{% url 'servicios' %}" class="nav-link d-block"><i class="bi bi-grid me-2"></i>Servicios</a>
+        <a href="{% url 'contacto' %}" class="nav-link d-block"><i class="bi bi-envelope me-2"></i>Contáctanos</a>
+        <a href="{% url 'ayuda' %}" class="nav-link d-block"><i class="bi bi-question-circle me-2"></i>Ayuda</a>
+        <a href="{% url 'mapa_sitio' %}" class="nav-link d-block"><i class="bi bi-map me-2"></i>Mapa del sitio</a>
+        <a href="{% url 'chat' %}" class="nav-link d-block"><i class="bi bi-chat-dots me-2"></i>Chat</a>
+        <a href="{% url 'buzon' %}" class="nav-link d-block"><i class="bi bi-mailbox me-2"></i>Buzón</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mensajes del sistema -->
+{% if messages %}
+<div class="container mt-3">
+  {% for msg in messages %}
+    <div class="alerta {% if msg.tags == 'success' %}alerta-exito{% elif msg.tags == 'error' %}alerta-error{% else %}alerta-info{% endif %}">
+      <i class="bi {% if msg.tags == 'success' %}bi-check-circle{% elif msg.tags == 'error' %}bi-exclamation-triangle{% else %}bi-info-circle{% endif %}"></i>
+      {{ msg }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ===== CONTENIDO ===== -->
+<main class="flex-grow-1">
+  {% block contenido %}{% endblock %}
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5><i class="bi bi-globe me-2"></i>SitioWeb MX</h5>
+        <p style="font-size:0.88rem; line-height:1.6;">Plataforma de servicios digitales con soluciones confiables para todos tus proyectos.</p>
+      </div>
+      <div class="col-md-2">
+        <h5>Sitio</h5>
+        <a href="{% url 'inicio' %}"><i class="bi bi-house me-1"></i>Inicio</a>
+        <a href="{% url 'nosotros' %}"><i class="bi bi-people me-1"></i>Nosotros</a>
+        <a href="{% url 'servicios' %}"><i class="bi bi-grid me-1"></i>Servicios</a>
+      </div>
+      <div class="col-md-3">
+        <h5>Soporte</h5>
+        <a href="{% url 'contacto' %}"><i class="bi bi-envelope me-1"></i>Contáctanos</a>
+        <a href="{% url 'ayuda' %}"><i class="bi bi-question-circle me-1"></i>Ayuda</a>
+        <a href="{% url 'chat' %}"><i class="bi bi-chat-dots me-1"></i>Chat en vivo</a>
+        <a href="{% url 'mapa_sitio' %}"><i class="bi bi-map me-1"></i>Mapa del sitio</a>
+      </div>
+      <div class="col-md-3">
+        <h5>Cuenta</h5>
+        <a href="{% url 'registro' %}"><i class="bi bi-person-plus me-1"></i>Registrarse</a>
+        <a href="{% url 'login' %}"><i class="bi bi-lock me-1"></i>Iniciar sesión</a>
+        <a href="{% url 'password_reset' %}"><i class="bi bi-key me-1"></i>Recuperar contraseña</a>
+        <a href="{% url 'buzon' %}"><i class="bi bi-mailbox me-1"></i>Buzón</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="footer-copy">© 2025 SitioWeb MX — Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

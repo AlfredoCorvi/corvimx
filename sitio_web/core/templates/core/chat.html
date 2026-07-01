@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Chat de soporte — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <h1 class="seccion-titulo"><i class="bi bi-chat-dots me-2" style="color:var(--acento);"></i>Chat de soporte</h1>
+        <div class="linea-acento"></div>
+        <p class="seccion-subtitulo">Chatea con nuestro equipo. Respondemos en minutos.</p>
+
+        <div class="chat-caja shadow-sm">
+          <div style="background:var(--azul-oscuro); color:white; padding:14px 20px; display:flex; align-items:center; gap:10px;">
+            <div style="width:10px;height:10px;background:#22c55e;border-radius:50%;"></div>
+            <span style="font-weight:600; font-size:0.92rem;">Soporte SitioWeb MX</span>
+            <span style="font-size:0.78rem; opacity:0.7; margin-left:auto;">En línea</span>
+          </div>
+
+          <div class="chat-mensajes" id="chatMensajes">
+            <div class="chat-msg soporte">
+              <div class="chat-burbuja">¡Hola! 👋 Soy el asistente de SitioWeb MX. ¿En qué puedo ayudarte hoy?</div>
+              <div class="chat-hora">09:00</div>
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <input type="text" id="chatTexto" placeholder="Escribe tu mensaje..." maxlength="500" autocomplete="off">
+            <button onclick="enviarMensaje()" id="btnEnviar"><i class="bi bi-send"></i></button>
+          </div>
+        </div>
+
+        <p style="font-size:0.82rem; color:var(--texto-medio); margin-top:10px; text-align:center;">
+          <i class="bi bi-info-circle me-1"></i>
+          Este es un chat de demostración. Para soporte real, usa el
+          <a href="{% url 'contacto' %}">formulario de contacto</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const respuestas = [
+  '¡Claro! Con gusto te ayudo con eso. ¿Puedes darme más detalles?',
+  'Entiendo tu consulta. Te recomiendo revisar nuestra sección de <a href="/ayuda/">Ayuda</a>.',
+  'Permíteme un momento para verificar esa información...',
+  'Puedes encontrar esa información en el <a href="/mapa-sitio/">Mapa del sitio</a>.',
+  '¿Hay algo más en lo que pueda ayudarte?',
+  'Gracias por contactarnos. Un agente humano revisará tu caso pronto.',
+];
+
+let msgIdx = 0;
+
+function hora() {
+  const now = new Date();
+  return now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+}
+
+function agregarMensaje(texto, tipo) {
+  const caja = document.getElementById('chatMensajes');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${tipo}`;
+  div.innerHTML = `<div class="chat-burbuja">${texto}</div><div class="chat-hora">${hora()}</div>`;
+  caja.appendChild(div);
+  caja.scrollTop = caja.scrollHeight;
+}
+
+function enviarMensaje() {
+  const input = document.getElementById('chatTexto');
+  const texto = input.value.trim();
+  if (!texto) return;
+  agregarMensaje(texto, 'usuario');
+  input.value = '';
+
+  setTimeout(() => {
+    const resp = respuestas[msgIdx % respuestas.length];
+    msgIdx++;
+    agregarMensaje(resp, 'soporte');
+  }, 900 + Math.random() * 600);
+}
+
+document.getElementById('chatTexto').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') enviarMensaje();
+});
+</script>
+{% endblock %}

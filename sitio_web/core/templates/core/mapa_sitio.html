@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Mapa del sitio — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="seccion-titulo"><i class="bi bi-map me-2" style="color:var(--acento);"></i>Mapa del sitio</h1>
+    <div class="linea-acento"></div>
+    <p class="seccion-subtitulo">Estructura completa de todas las páginas y secciones disponibles.</p>
+
+    <div class="row g-4">
+      <!-- Secciones principales -->
+      <div class="col-md-4">
+        <div class="tarjeta mapa-seccion">
+          <h4><i class="bi bi-layout-text-sidebar me-2"></i>Secciones principales</h4>
+          <ul class="mapa-lista">
+            <li><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+            <li><a href="{% url 'servicios' %}">Servicios</a></li>
+            <li><a href="{% url 'contacto' %}">Contáctanos</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Secciones secundarias -->
+      <div class="col-md-4">
+        <div class="tarjeta mapa-seccion">
+          <h4><i class="bi bi-list-nested me-2"></i>Secciones secundarias</h4>
+          <ul class="mapa-lista">
+            <li><a href="{% url 'ayuda' %}">Ayuda y FAQ</a></li>
+            <li><a href="{% url 'buscar' %}">Búsqueda del sitio</a></li>
+            <li><a href="{% url 'mapa_sitio' %}">Mapa del sitio</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Elementos adicionales -->
+      <div class="col-md-4">
+        <div class="tarjeta mapa-seccion">
+          <h4><i class="bi bi-plus-circle me-2"></i>Elementos adicionales</h4>
+          <ul class="mapa-lista">
+            <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
+            <li><a href="{% url 'password_reset' %}">Recuperar contraseña</a></li>
+            <li><a href="{% url 'buzon' %}">Buzón de mensajes</a></li>
+            <li><a href="{% url 'chat' %}">Chat de soporte</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Árbol visual -->
+    <div class="form-wrapper mt-4">
+      <h3 style="font-size:1.1rem; font-weight:700; color:var(--azul-oscuro); margin-bottom:20px;">
+        <i class="bi bi-diagram-3 me-2"></i>Árbol de navegación
+      </h3>
+      <div style="font-family: monospace; font-size: 0.9rem; line-height: 2; color: var(--texto-medio);">
+        <div style="color:var(--azul-oscuro); font-weight:700;">🌐 SitioWeb MX</div>
+        <div style="padding-left:20px;">├── 🏠 <a href="{% url 'inicio' %}">Inicio</a></div>
+        <div style="padding-left:20px;">├── 👥 <a href="{% url 'nosotros' %}">Nosotros</a></div>
+        <div style="padding-left:20px;">├── ⚙️ <a href="{% url 'servicios' %}">Servicios</a></div>
+        <div style="padding-left:20px;">├── ✉️ <a href="{% url 'contacto' %}">Contáctanos</a></div>
+        <div style="padding-left:20px;">├── ❓ <a href="{% url 'ayuda' %}">Ayuda</a></div>
+        <div style="padding-left:20px;">├── 🔍 <a href="{% url 'buscar' %}">Búsqueda</a></div>
+        <div style="padding-left:20px;">├── 💬 <a href="{% url 'chat' %}">Chat</a></div>
+        <div style="padding-left:20px;">├── 📬 <a href="{% url 'buzon' %}">Buzón</a></div>
+        <div style="padding-left:20px;">└── 👤 Cuenta</div>
+        <div style="padding-left:48px;">├── <a href="{% url 'registro' %}">Registrarse</a></div>
+        <div style="padding-left:48px;">├── <a href="{% url 'login' %}">Iniciar sesión</a></div>
+        <div style="padding-left:48px;">└── <a href="{% url 'password_reset' %}">Recuperar contraseña</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

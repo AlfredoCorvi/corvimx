@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Iniciar sesión — SitioWeb MX{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="form-wrapper">
+          <h2><i class="bi bi-lock me-2" style="color:var(--azul-claro);"></i>Iniciar sesión</h2>
+          <p class="subtitulo">Accede con tu usuario y contraseña.</p>
+
+          {% if form.errors %}
+            <div class="alerta alerta-error">
+              <i class="bi bi-exclamation-triangle"></i>
+              Usuario o contraseña incorrectos. Intenta de nuevo.
+            </div>
+          {% endif %}
+
+          <form method="post" id="formLogin" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Usuario</label>
+              <input type="text" name="username" class="form-control" placeholder="tu_usuario" required autocomplete="username">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contraseña</label>
+              <div style="position:relative;">
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="••••••••" required autocomplete="current-password">
+                <button type="button" onclick="togglePassword()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--texto-medio);">
+                  <i class="bi bi-eye" id="eyeIcon"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn-principal w-100">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+            </button>
+          </form>
+
+          <div style="margin-top:20px; text-align:center; font-size:0.88rem; color:var(--texto-medio);">
+            <a href="{% url 'password_reset' %}"><i class="bi bi-key me-1"></i>¿Olvidaste tu contraseña?</a>
+            <span style="margin:0 8px;">·</span>
+            <a href="{% url 'registro' %}"><i class="bi bi-person-plus me-1"></i>Crear cuenta</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function togglePassword() {
+  const input = document.getElementById('inputPassword');
+  const icon = document.getElementById('eyeIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'bi bi-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'bi bi-eye';
+  }
+}
+
+document.getElementById('formLogin').addEventListener('submit', function(e) {
+  const user = document.querySelector('[name="username"]').value.trim();
+  const pass = document.querySelector('[name="password"]').value;
+  if (!user || !pass) {
+    alert('Completa todos los campos.');
+    e.preventDefault();
+  }
+});
+</script>
+{% endblock %}
