@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block titulo %}Chat de soporte — SitioWeb MX{% endblock %}
 
 {% block contenido %}
@@ -26,7 +27,7 @@
 
           <div class="chat-input">
             <input type="text" id="chatTexto" placeholder="Escribe tu mensaje..." maxlength="500" autocomplete="off">
-            <button onclick="enviarMensaje()" id="btnEnviar"><i class="bi bi-send"></i></button>
+            <button id="btnEnviar"><i class="bi bi-send"></i></button>
           </div>
         </div>
 
@@ -42,48 +43,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-const respuestas = [
-  '¡Claro! Con gusto te ayudo con eso. ¿Puedes darme más detalles?',
-  'Entiendo tu consulta. Te recomiendo revisar nuestra sección de <a href="/ayuda/">Ayuda</a>.',
-  'Permíteme un momento para verificar esa información...',
-  'Puedes encontrar esa información en el <a href="/mapa-sitio/">Mapa del sitio</a>.',
-  '¿Hay algo más en lo que pueda ayudarte?',
-  'Gracias por contactarnos. Un agente humano revisará tu caso pronto.',
-];
-
-let msgIdx = 0;
-
-function hora() {
-  const now = new Date();
-  return now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-}
-
-function agregarMensaje(texto, tipo) {
-  const caja = document.getElementById('chatMensajes');
-  const div = document.createElement('div');
-  div.className = `chat-msg ${tipo}`;
-  div.innerHTML = `<div class="chat-burbuja">${texto}</div><div class="chat-hora">${hora()}</div>`;
-  caja.appendChild(div);
-  caja.scrollTop = caja.scrollHeight;
-}
-
-function enviarMensaje() {
-  const input = document.getElementById('chatTexto');
-  const texto = input.value.trim();
-  if (!texto) return;
-  agregarMensaje(texto, 'usuario');
-  input.value = '';
-
-  setTimeout(() => {
-    const resp = respuestas[msgIdx % respuestas.length];
-    msgIdx++;
-    agregarMensaje(resp, 'soporte');
-  }, 900 + Math.random() * 600);
-}
-
-document.getElementById('chatTexto').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') enviarMensaje();
-});
-</script>
+<script src="{% static 'js/chat.js' %}"></script>
 {% endblock %}

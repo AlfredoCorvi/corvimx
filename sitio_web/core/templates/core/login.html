@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block titulo %}Iniciar sesión — SitioWeb MX{% endblock %}
 
 {% block contenido %}
@@ -27,7 +28,7 @@
               <label class="form-label">Contraseña</label>
               <div style="position:relative;">
                 <input type="password" name="password" class="form-control" id="inputPassword" placeholder="••••••••" required autocomplete="current-password">
-                <button type="button" onclick="togglePassword()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--texto-medio);">
+                <button type="button" id="togglePasswordBtn" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--texto-medio);">
                   <i class="bi bi-eye" id="eyeIcon"></i>
                 </button>
               </div>
@@ -50,26 +51,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-function togglePassword() {
-  const input = document.getElementById('inputPassword');
-  const icon = document.getElementById('eyeIcon');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.className = 'bi bi-eye-slash';
-  } else {
-    input.type = 'password';
-    icon.className = 'bi bi-eye';
-  }
-}
-
-document.getElementById('formLogin').addEventListener('submit', function(e) {
-  const user = document.querySelector('[name="username"]').value.trim();
-  const pass = document.querySelector('[name="password"]').value;
-  if (!user || !pass) {
-    alert('Completa todos los campos.');
-    e.preventDefault();
-  }
-});
-</script>
+<script src="{% static 'js/login.js' %}"></script>
 {% endblock %}

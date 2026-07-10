@@ -1,7 +1,18 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.html import strip_tags
 import re
+
+
+def _rechazar_html(valor, mensaje='Este campo no debe contener etiquetas HTML.'):
+    """Rechaza (en vez de solo limpiar) cualquier entrada que contenga
+    etiquetas HTML, como defensa adicional en servidor contra XSS
+    almacenado, además del auto-escape que ya aplican los templates
+    de Django."""
+    if valor and strip_tags(valor) != valor:
+        raise forms.ValidationError(mensaje)
+    return valor
 
 
 class RegistroForm(UserCreationForm):
@@ -49,6 +60,22 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError('Solo letras, números y guion bajo.')
         return username
 
+    def clean_first_name(self):
+        return _rechazar_html(self.cleaned_data.get('first_name', ''))
+
+    def clean_last_name(self):
+        return _rechazar_html(self.cleaned_data.get('last_name', ''))
+
+    # Verificación humana: el frontend solo maneja la UI del checkbox;
+    # aquí se valida de forma obligatoria en el servidor.
+    captcha_ok = forms.CharField(required=True)
+
+    def clean_captcha_ok(self):
+        valor = self.cleaned_data.get('captcha_ok')
+        if valor != '1':
+            raise forms.ValidationError('Debes confirmar que no eres un robot.')
+        return valor
+
 
 class ContactoForm(forms.Form):
     nombre = forms.CharField(
@@ -69,13 +96,28 @@ class ContactoForm(forms.Form):
         label='Mensaje',
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Escribe tu mensaje aquí...'}),
         min_length=20,
+        max_length=5000,
     )
+    # Verificación humana: validada obligatoriamente en el servidor.
+    captcha_ok = forms.CharField(required=True)
 
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre', '')
         if any(char.isdigit() for char in nombre):
             raise forms.ValidationError('El nombre no debe contener números.')
-        return nombre
+        return _rechazar_html(nombre)
+
+    def clean_asunto(self):
+        return _rechazar_html(self.cleaned_data.get('asunto', ''))
+
+    def clean_mensaje(self):
+        return _rechazar_html(self.cleaned_data.get('mensaje', ''))
+
+    def clean_captcha_ok(self):
+        valor = self.cleaned_data.get('captcha_ok')
+        if valor != '1':
+            raise forms.ValidationError('Confirma que no eres un robot.')
+        return valor
 
 
 class BuzonForm(forms.Form):
@@ -88,7 +130,14 @@ class BuzonForm(forms.Form):
         label='Mensaje',
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Tu mensaje...'}),
         min_length=10,
+        max_length=5000,
     )
+
+    def clean_asunto(self):
+        return _rechazar_html(self.cleaned_data.get('asunto', ''))
+
+    def clean_mensaje(self):
+        return _rechazar_html(self.cleaned_data.get('mensaje', ''))
 
 
 class BusquedaForm(forms.Form):
@@ -101,3 +150,6 @@ class BusquedaForm(forms.Form):
             'autocomplete': 'off',
         }),
     )
+
+    def clean_q(self):
+        return _rechazar_html(self.cleaned_data.get('q', ''))

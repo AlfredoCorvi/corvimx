@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block titulo %}Registrarse — SitioWeb MX{% endblock %}
 
 {% block contenido %}
@@ -59,7 +60,7 @@
               <!-- Verificación humana (captcha simulado) -->
               <div class="col-12">
                 <label class="form-label">Verificación humana</label>
-                <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
+                <div class="captcha-box" id="captchaBox">
                   <div class="captcha-check" id="captchaCheck"></div>
                   <span class="captcha-texto">No soy un robot</span>
                   <span style="margin-left:auto; font-size:1.4rem;">🛡️</span>
@@ -87,68 +88,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-let captchaOk = false;
-
-function toggleCaptcha() {
-  captchaOk = !captchaOk;
-  const check = document.getElementById('captchaCheck');
-  const input = document.getElementById('captchaInput');
-  if (captchaOk) {
-    check.innerHTML = '✓';
-    check.classList.add('marcado');
-    input.value = '1';
-  } else {
-    check.innerHTML = '';
-    check.classList.remove('marcado');
-    input.value = '';
-  }
-}
-
-// Validación frontend
-document.getElementById('formRegistro').addEventListener('submit', function(e) {
-  let ok = true;
-
-  // Captcha
-  if (!captchaOk) {
-    document.getElementById('captchaError').style.display = 'block';
-    ok = false;
-  } else {
-    document.getElementById('captchaError').style.display = 'none';
-  }
-
-  // Contraseñas coinciden
-  const p1 = document.querySelector('[name="password1"]').value;
-  const p2 = document.querySelector('[name="password2"]').value;
-  if (p1 && p2 && p1 !== p2) {
-    alert('Las contraseñas no coinciden.');
-    ok = false;
-  }
-
-  if (!ok) e.preventDefault();
-});
-
-// Validación en tiempo real
-document.querySelector('[name="username"]').addEventListener('input', function() {
-  const val = this.value;
-  const regex = /^[a-zA-Z0-9_]+$/;
-  if (val && !regex.test(val)) {
-    this.classList.add('is-invalid');
-  } else {
-    this.classList.remove('is-invalid');
-    if (val.length >= 3) this.classList.add('is-valid');
-  }
-});
-
-document.querySelector('[name="email"]').addEventListener('blur', function() {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (this.value && emailRegex.test(this.value)) {
-    this.classList.add('is-valid');
-    this.classList.remove('is-invalid');
-  } else if (this.value) {
-    this.classList.add('is-invalid');
-    this.classList.remove('is-valid');
-  }
-});
-</script>
+<script src="{% static 'js/registro.js' %}"></script>
 {% endblock %}

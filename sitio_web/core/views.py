@@ -2,7 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 from .forms import RegistroForm, ContactoForm, BuzonForm, BusquedaForm
+
+
+@method_decorator(ratelimit(key='ip', rate='10/m', method='POST', block=True), name='post')
+class LoginRateLimitedView(LoginView):
+    """Login estándar de Django con límite de intentos por IP para
+    dificultar fuerza bruta (defensa, no ataque)."""
+    template_name = 'core/login.html'
+
 
 
 def inicio(request):
@@ -37,6 +48,7 @@ def chat(request):
     return render(request, 'core/chat.html')
 
 
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def contacto(request):
     if request.method == 'POST':
         form = ContactoForm(request.POST)
@@ -50,6 +62,7 @@ def contacto(request):
     return render(request, 'core/contacto.html', {'form': form})
 
 
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def registro(request):
     if request.user.is_authenticated:
         return redirect('inicio')
@@ -68,6 +81,7 @@ def registro(request):
 
 
 @login_required
+@ratelimit(key='user_or_ip', rate='15/m', method='POST', block=True)
 def buzon(request):
     if request.method == 'POST':
         form = BuzonForm(request.POST)

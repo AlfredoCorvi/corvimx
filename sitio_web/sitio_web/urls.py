@@ -18,7 +18,7 @@ urlpatterns = [
     path('buscar/', views.buscar, name='buscar'),
     path('chat/', views.chat, name='chat'),
     path('registro/', views.registro, name='registro'),
-    path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('login/', views.LoginRateLimitedView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('recuperar-contrasena/', auth_views.PasswordResetView.as_view(
         template_name='core/recuperar_contrasena.html',

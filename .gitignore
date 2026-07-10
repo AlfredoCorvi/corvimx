@@ -1,0 +1,40 @@
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Base de datos local
+db.sqlite3
+db.sqlite3-journal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Logs generados por la app
+logs/
+*.log
+
+# Django
+staticfiles/
+media/
+
+# Herramientas / reportes de auditoría (evidencia se agrega manualmente al repo si se desea)
+.bandit_report.json
+zap-report.html
+zap-baseline-report.html
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

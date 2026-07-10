@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block titulo %}Ayuda — SitioWeb MX{% endblock %}
 
 {% block contenido %}
@@ -15,7 +16,7 @@
         </h3>
 
         <div class="faq-item">
-          <div class="faq-pregunta" onclick="toggleFaq(this)">
+          <div class="faq-pregunta">
             ¿Cómo creo una cuenta?
             <i class="bi bi-chevron-down faq-icono"></i>
           </div>
@@ -25,7 +26,7 @@
         </div>
 
         <div class="faq-item">
-          <div class="faq-pregunta" onclick="toggleFaq(this)">
+          <div class="faq-pregunta">
             ¿Olvidé mi contraseña, qué hago?
             <i class="bi bi-chevron-down faq-icono"></i>
           </div>
@@ -35,7 +36,7 @@
         </div>
 
         <div class="faq-item">
-          <div class="faq-pregunta" onclick="toggleFaq(this)">
+          <div class="faq-pregunta">
             ¿Cómo contacto al soporte?
             <i class="bi bi-chevron-down faq-icono"></i>
           </div>
@@ -45,7 +46,7 @@
         </div>
 
         <div class="faq-item">
-          <div class="faq-pregunta" onclick="toggleFaq(this)">
+          <div class="faq-pregunta">
             ¿Cómo busco contenido en el sitio?
             <i class="bi bi-chevron-down faq-icono"></i>
           </div>
@@ -55,7 +56,7 @@
         </div>
 
         <div class="faq-item">
-          <div class="faq-pregunta" onclick="toggleFaq(this)">
+          <div class="faq-pregunta">
             ¿Mis datos están seguros?
             <i class="bi bi-chevron-down faq-icono"></i>
           </div>
@@ -84,10 +85,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-function toggleFaq(el) {
-  const item = el.parentElement;
-  item.classList.toggle('activo');
-}
-</script>
+<script src="{% static 'js/ayuda.js' %}"></script>
 {% endblock %}

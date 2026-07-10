@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block titulo %}Contáctanos — SitioWeb MX{% endblock %}
 
 {% block contenido %}
@@ -39,7 +40,7 @@
 
               <!-- Verificación humana -->
               <div class="col-12">
-                <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
+                <div class="captcha-box" id="captchaBox">
                   <div class="captcha-check" id="captchaCheck"></div>
                   <span class="captcha-texto">No soy un robot</span>
                   <span style="margin-left:auto;">🛡️</span>
@@ -97,33 +98,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-let captchaOk = false;
-function toggleCaptcha() {
-  captchaOk = !captchaOk;
-  const check = document.getElementById('captchaCheck');
-  check.innerHTML = captchaOk ? '✓' : '';
-  check.classList.toggle('marcado', captchaOk);
-  document.getElementById('captchaInput').value = captchaOk ? '1' : '';
-}
-
-const textarea = document.querySelector('[name="mensaje"]');
-const counter = document.getElementById('charCount');
-textarea.addEventListener('input', () => {
-  counter.textContent = textarea.value.length;
-  if (textarea.value.length < 20) counter.style.color = '#ef4444';
-  else counter.style.color = '#22c55e';
-});
-
-document.getElementById('formContacto').addEventListener('submit', function(e) {
-  if (!captchaOk) {
-    document.getElementById('captchaError').style.display = 'block';
-    e.preventDefault();
-  }
-  if (textarea.value.length < 20) {
-    alert('El mensaje debe tener al menos 20 caracteres.');
-    e.preventDefault();
-  }
-});
-</script>
+<script src="{% static 'js/contacto.js' %}"></script>
 {% endblock %}

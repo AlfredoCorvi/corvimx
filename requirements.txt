@@ -1,0 +1,6 @@
+Django>=5.2.8,<5.3
+django-csp>=3.8
+django-ratelimit>=4.1.0
+django-environ>=0.11.2
+bandit>=1.7.9
+pip-audit>=2.7.3
