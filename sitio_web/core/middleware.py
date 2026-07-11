@@ -144,6 +144,10 @@ class SecurityLoggingMiddleware:
             )
 
         response = self.get_response(request)
+        response['Permissions-Policy'] = (
+            'geolocation=(), microphone=(), camera=(), payment=(), usb=()'
+            )
+
 
         duration_ms = (time.monotonic() - start_time) * 1000
         user = request.user.username if getattr(request, 'user', None) and request.user.is_authenticated else 'anonimo'
